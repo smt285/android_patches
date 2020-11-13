@@ -24,14 +24,14 @@ index 2a59d52..32c0f1c 100644
  	@mkdir -p $(dir $@)
 -	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $<
 -	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $(dir $<)/$(notdir $@).dontaudit $<.dontaudit
-+	mv $< $@.real
++	$(hide) mv $< $@.real
 +ifeq ($(SELINUX_IGNORE_NEVERALLOWS),true)
-+	sed -z 's/\n\s*neverallow[^;]*;/\n/g' $@.real > $@.neverallow
-+	mv $@.neverallow $@.dontaudit
-+	cp $@.dontaudit $@.real
++	$(hide) sed -z 's/\n\s*neverallow[^;]*;/\n/g' $@.real > $@.neverallow
++	$(hide) mv $@.neverallow $@.dontaudit
++	$(hide) cp $@.dontaudit $@.real
 +endif
-+	$(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $@.real
-+	$(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $(dir $<)/$(notdir $@).dontaudit $@.dontaudit
++	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $@.real
++	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $(dir $<)/$(notdir $@).dontaudit $@.dontaudit
  	$(hide) $(HOST_OUT_EXECUTABLES)/sepolicy-analyze $@.tmp permissive > $@.permissivedomains
  	$(hide) if [ "$(TARGET_BUILD_VARIANT)" = "user" -a -s $@.permissivedomains ]; then \
  		echo "==========" 1>&2; \
@@ -44,13 +44,13 @@ index 2a59d52..32c0f1c 100644
 +$(built_sepolicy_neverallows)
  	@mkdir -p $(dir $@)
 -	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $<
-+	mv $< $@.real
++	$(hide) mv $< $@.real
 +ifeq ($(SELINUX_IGNORE_NEVERALLOWS),true)
-+	sed -z 's/\n\s*neverallow[^;]*;/\n/g' $@.real > $@.neverallow
-+	mv $@.neverallow $@.dontaudit
-+	cp $@.dontaudit $@.real
++	$(hide) sed -z 's/\n\s*neverallow[^;]*;/\n/g' $@.real > $@.neverallow
++	$(hide) mv $@.neverallow $@.dontaudit
++	$(hide) cp $@.dontaudit $@.real
 +endif
-+	$(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $@.real
++	$(hide) $(HOST_OUT_EXECUTABLES)/checkpolicy -M -c $(POLICYVERS) -o $@.tmp $@.real
  	$(hide) $(HOST_OUT_EXECUTABLES)/sepolicy-analyze $@.tmp permissive > $@.permissivedomains
  	$(hide) if [ "$(TARGET_BUILD_VARIANT)" = "user" -a -s $@.permissivedomains ]; then \
  		echo "==========" 1>&2; \
